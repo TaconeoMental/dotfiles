@@ -15,7 +15,7 @@ Plugin 'vim-python/python-syntax'
 
 Plugin 'vim-airline/vim-airline'
 
-Plugin 'ycm-core/youcompleteme'
+Plugin 'davidhalter/jedi-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
