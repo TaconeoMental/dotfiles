@@ -17,15 +17,34 @@ Plugin 'vim-airline/vim-airline'
 
 Plugin 'davidhalter/jedi-vim'
 
+Plugin 'SirVer/ultisnips'
+
+Plugin 'garbas/vim-snipmate'
+
+Plugin 'MarcWeber/vim-addon-mw-utils'
+
+Plugin 'tomtom/tlib_vim'
+
+Plugin 'yuttie/comfortable-motion.vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 
 syntax on
-colorscheme darkblue
+colorscheme molokai
 
 let g:python_highlight_all = 1
+let g:rubycomplete_buffer_loading = 1
+let g:snipMate = {}
+let g:snipMate.scope_aliases = {}
+let g:snipMate.scope_aliases['ruby'] = 'ruby,ruby-rails,ruby-1.9'
+
+" Trigger configuration. You need to change this to something else than <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 set guioptions-=r
 set guioptions-=R
