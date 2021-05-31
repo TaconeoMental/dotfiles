@@ -35,7 +35,7 @@ filetype plugin indent on    " required
 
 
 syntax on
-colorscheme molokai
+colorscheme SerialExperimentsLain
 
 let g:python_highlight_all = 1
 let g:rubycomplete_buffer_loading = 1
@@ -47,6 +47,15 @@ let g:snipMate.scope_aliases['ruby'] = 'ruby,ruby-rails,ruby-1.9'
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" Configuración para Codi
+let g:codi#interpreters = {
+   \ 'python': {
+       \ 'bin': 'python3',
+       \ 'prompt': '^\(>>>\|\.\.\.\) ',
+       \ },
+   \ }
+let g:codi#width = 70
 
 set guioptions-=r
 set guioptions-=R
