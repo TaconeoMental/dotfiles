@@ -4,7 +4,6 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'tomasr/molokai'
@@ -29,10 +28,11 @@ Plugin 'yuttie/comfortable-motion.vim'
 
 Plugin 'metakirby5/codi.vim'
 
-" All of your Plugins must be added before the following line
+Plugin 'Yggdroot/indentLine'
+
+Plugin 'lu-ren/SerialExperimentsLain'
 call vundle#end()            " required
 filetype plugin indent on    " required
-
 
 syntax on
 colorscheme SerialExperimentsLain
@@ -43,7 +43,6 @@ let g:snipMate = {}
 let g:snipMate.scope_aliases = {}
 let g:snipMate.scope_aliases['ruby'] = 'ruby,ruby-rails,ruby-1.9'
 
-" Trigger configuration. You need to change this to something else than <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
@@ -56,6 +55,11 @@ let g:codi#interpreters = {
        \ },
    \ }
 let g:codi#width = 70
+
+" Conf de indentLine
+let g:indentLine_char = '¦'
+
+" Configuración general
 
 set guioptions-=r
 set guioptions-=R
@@ -74,6 +78,9 @@ set encoding=utf-8
 set textwidth=79
 set tabstop=4
 set expandtab
+
+" Bloqueo el uso de las flechas para moverse >:(
+" No me gusta usar <esc> para salir de los modos, así que lo mapeo jj.
 
 nnoremap <Up> <nop>
 nnoremap <Down> <nop>
