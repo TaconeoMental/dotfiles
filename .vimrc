@@ -88,8 +88,8 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
 
 nnoremap <leader>n :NERDTreeFocus<CR>
 
-""" Configuración de schlepp
-let g:move_key_modifier = 'C'
+""" Configuración de vim-move
+let g:move_key_modifier = 'S'
 
 """ Configuración general
 " No mostrar el modo de edición actual
