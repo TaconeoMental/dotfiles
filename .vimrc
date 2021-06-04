@@ -5,11 +5,10 @@ set encoding=utf-8
 let mapleader=","
 
 """ Inicio de configuración Vundle
-
 " Requeridos para Vundle
 set nocompatible
-filetype off
 
+filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -53,7 +52,6 @@ colorscheme molokai
 """ Configuración de python-syntax
 let g:python_highlight_all = 1
 
-
 """ Configuración de jedi-vim
 " Con librerías muy grandes se demora unaeternidad en cargar todas las
 " variables al poner un punto. Prefiero no tenerlo y activarlo manualmente.
@@ -67,7 +65,6 @@ let g:jedi#usages_command = "<leader>u"
 " documentación arriba. Suena interesante, pero la verdad no lo uso.
 autocmd FileType python setlocal completeopt-=preview
 
-
 """ Configuración para Codi
 let g:codi#interpreters = {
    \ 'python': {
@@ -77,10 +74,8 @@ let g:codi#interpreters = {
    \ }
 let g:codi#width = 70
 
-
 """ Configuración de indentLine
 let g:indentLine_char = '¦'
-
 
 """ Configuración de NERDTree
 " Se abre siempre con vim y lleva el focus al archivo
@@ -92,7 +87,6 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
     \ quit | endif
 
 nnoremap <leader>n :NERDTreeFocus<CR>
-
 
 """ Configuración de schlepp
 let g:move_key_modifier = 'C'
@@ -120,6 +114,17 @@ set guioptions-=R " chao scrollbar en vsplits
 set guioptions-=l " chao scrollbar izquierdo
 set guioptions-=L " chao scrollbar izquierdo en vsplits
 
+" Sé que se ve feo, pero creo que la única forma decente de ajustar el tamaño
+" de los splits es con el mouse
+function! ToggleMouse()
+    if &mouse == 'n'
+        set mouse=
+    else
+        set mouse=n
+    endif
+endfunc
+nnoremap <F3> :call ToggleMouse()<CR>
+
 " Una de mis cosas favoritas para moverme eficientemente
 " Numeros relativos solo en el buffer actual
 augroup numbertoggle
@@ -138,7 +143,6 @@ set ruler
 
 " Debería ser default
 set visualbell
-
 
 " Whitespace
 set textwidth=79
