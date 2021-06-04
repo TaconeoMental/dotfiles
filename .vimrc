@@ -1,53 +1,74 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" Duh
+set encoding=utf-8
 
-" set the runtime path to include Vundle and initialize
+" Me parece más cómodo que \
+let mapleader=","
+
+""" Inicio de configuración Vundle
+
+" Requeridos para Vundle
+set nocompatible
+filetype off
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+
+" Vundle bootstrap
 Plugin 'VundleVim/Vundle.vim'
 
+" Collorschemes
 Plugin 'tomasr/molokai'
+Plugin 'lu-ren/SerialExperimentsLain'
 
-Plugin 'hynek/vim-python-pep8-indent'
-
-Plugin 'vim-python/python-syntax'
-
-Plugin 'vim-airline/vim-airline'
-
-Plugin 'davidhalter/jedi-vim'
-
-Plugin 'SirVer/ultisnips'
-
-Plugin 'garbas/vim-snipmate'
-
-Plugin 'MarcWeber/vim-addon-mw-utils'
-
-Plugin 'tomtom/tlib_vim'
-
+" General
+Plugin 'preservim/nerdtree'
+Plugin 'itchyny/lightline.vim'
 Plugin 'yuttie/comfortable-motion.vim'
+Plugin 'Yggdroot/indentLine'
+Plugin 'matze/vim-move'
 
+" Programación general
 Plugin 'metakirby5/codi.vim'
 
-Plugin 'Yggdroot/indentLine'
+" Python
+Plugin 'hynek/vim-python-pep8-indent'
+Plugin 'vim-python/python-syntax'
+Plugin 'davidhalter/jedi-vim'
 
-Plugin 'lu-ren/SerialExperimentsLain'
+" Ruby
+Plugin 'vim-ruby/vim-ruby'
+
+" Arduino
+Plugin 'sudar/vim-arduino-syntax'
+
+" Go
+Plugin 'fatih/vim-go'
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 syntax on
-colorscheme SerialExperimentsLain
+colorscheme molokai
 
+""" Configuración de python-syntax
 let g:python_highlight_all = 1
-let g:rubycomplete_buffer_loading = 1
-let g:snipMate = {}
-let g:snipMate.scope_aliases = {}
-let g:snipMate.scope_aliases['ruby'] = 'ruby,ruby-rails,ruby-1.9'
 
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
-" Configuración para Codi
+""" Configuración de jedi-vim
+" Con librerías muy grandes se demora unaeternidad en cargar todas las
+" variables al poner un punto. Prefiero no tenerlo y activarlo manualmente.
+let g:jedi#popup_on_dot = 0
+
+" Porque me gusta esta funcion y <leader>n lo tengo mapeado para NERDTree
+let g:jedi#usages_command = "<leader>u"
+
+" Esta no es específica de jedi, sino de completeopt, pero jedi-vim la
+" inicializa en su ftplugin y hace que con cada completación me muestre la
+" documentación arriba. Suena interesante, pero la verdad no lo uso.
+autocmd FileType python setlocal completeopt-=preview
+
+
+""" Configuración para Codi
 let g:codi#interpreters = {
    \ 'python': {
        \ 'bin': 'python3',
@@ -56,23 +77,68 @@ let g:codi#interpreters = {
    \ }
 let g:codi#width = 70
 
-" Conf de indentLine
+
+""" Configuración de indentLine
 let g:indentLine_char = '¦'
 
-" Configuración general
 
-set guioptions-=r
-set guioptions-=R
-set guioptions-=l
-set guioptions-=L
+""" Configuración de NERDTree
+" Se abre siempre con vim y lleva el focus al archivo
+" También actualiza lightline porque hay un bug cuando se usan estos dos juntos
+autocmd VimEnter * NERDTree | wincmd p | call lightline#update()
 
-set relativenumber
+" Si NERDTree es la última ventana abierta, la cerramos
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+    \ quit | endif
 
+nnoremap <leader>n :NERDTreeFocus<CR>
+
+
+""" Configuración de schlepp
+let g:move_key_modifier = 'C'
+
+""" Configuración general
+" No mostrar el modo de edición actual
+set noshowmode
+
+" Shortcuts para navegar entre splits
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" Splits más naturales: hacia la derecha y hacia abajo
+set splitbelow
+set splitright
+
+" PEP8 es para ñoños
+autocmd FileType python setlocal cc=80
+
+" Para no usar el scroll del mouse
+set guioptions-=r " chao scrollbar
+set guioptions-=R " chao scrollbar en vsplits
+set guioptions-=l " chao scrollbar izquierdo
+set guioptions-=L " chao scrollbar izquierdo en vsplits
+
+" Una de mis cosas favoritas para moverme eficientemente
+" Numeros relativos solo en el buffer actual
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set number relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
+" Eliminar trailing whitespace al guardar el archivo
+autocmd BufWritePre * %s/\s\+$//e
+autocmd BufWritePre * %s/\n\+\%$//e
+autocmd BufWritePre *.[ch] %s/\%$/\r/e
+
+" Mostrar posición del cursor
 set ruler
 
+" Debería ser default
 set visualbell
 
-set encoding=utf-8
 
 " Whitespace
 set textwidth=79
@@ -80,12 +146,11 @@ set tabstop=4
 set expandtab
 
 " Bloqueo el uso de las flechas para moverse >:(
-" No me gusta usar <esc> para salir de los modos, así que lo mapeo jj.
-
 nnoremap <Up> <nop>
 nnoremap <Down> <nop>
 nnoremap <left> <nop>
 nnoremap <right> <nop>
 
+" No me gusta usar <esc> para salir de los modos, así que lo mapeo a jj.
 inoremap jj <esc>
 vnoremap jj <esc><esc>
