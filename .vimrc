@@ -16,8 +16,14 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Collorschemes
-Plugin 'tomasr/molokai'
 Plugin 'lu-ren/SerialExperimentsLain'
+Plugin 'matsuuu/pinkmare'
+Plugin 'yassinebridi/vim-purpura'
+Plugin 'nightsense/cosmic_latte'
+Plugin 'ewilazarus/preto'
+Plugin 'erichdongubler/vim-sublime-monokai'
+Plugin 'severij/vadelma'
+Plugin 'drewtempelmeyer/palenight.vim'
 
 " General
 Plugin 'preservim/nerdtree'
@@ -25,9 +31,14 @@ Plugin 'itchyny/lightline.vim'
 Plugin 'yuttie/comfortable-motion.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'matze/vim-move'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'mg979/vim-visual-multi'
+Plugin 'vimsence/vimsence'
 
 " Programación general
 Plugin 'metakirby5/codi.vim'
+Plugin 'Chiel92/vim-autoformat'
 
 " Python
 Plugin 'hynek/vim-python-pep8-indent'
@@ -41,13 +52,22 @@ Plugin 'vim-ruby/vim-ruby'
 Plugin 'sudar/vim-arduino-syntax'
 
 " Go
-Plugin 'fatih/vim-go'
+" Plugin 'fatih/vim-go'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 syntax on
-colorscheme molokai
+set termguicolors
+"set term=xterm-256color
+colorscheme SerialExperimentsLain
+
+""" Configuración de vimsence
+let g:vimsence_file_explorer_text = 'En el explorador'
+let g:vimsence_file_explorer_details = 'Buscando archivos'
+let g:vimsence_editing_details = 'Editando: {}'
+let g:vimsence_editing_state = 'Proyecto: {}'
+let g:vimsence_editing_large_text = "Editando un archivo {}"
 
 """ Configuración de python-syntax
 let g:python_highlight_all = 1
@@ -77,6 +97,11 @@ let g:codi#width = 70
 """ Configuración de indentLine
 let g:indentLine_char = '¦'
 
+""" Configuración de lightline
+let g:lightline = {
+      \ 'colorscheme': 'ayu_dark',
+      \ }
+
 """ Configuración de NERDTree
 " Se abre siempre con vim y lleva el focus al archivo
 " También actualiza lightline porque hay un bug cuando se usan estos dos juntos
@@ -88,12 +113,18 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
 
 nnoremap <leader>n :NERDTreeFocus<CR>
 
+""" Configuración de vim-autoformat
+noremap <F5> :Autoformat<CR>
+
 """ Configuración de vim-move
 let g:move_key_modifier = 'S'
 
 """ Configuración general
 " No mostrar el modo de edición actual
 set noshowmode
+
+" En pantallas pequeñas se ve mal
+set nowrap
 
 " Shortcuts para navegar entre splits
 map <C-h> <C-w>h
@@ -136,7 +167,7 @@ augroup END
 " Eliminar trailing whitespace al guardar el archivo
 autocmd BufWritePre * %s/\s\+$//e
 autocmd BufWritePre * %s/\n\+\%$//e
-autocmd BufWritePre *.[ch] %s/\%$/\r/e
+"autocmd BufWritePre *.[ch] %s/\%$/\r/e
 
 " Mostrar posición del cursor
 set ruler
@@ -147,6 +178,7 @@ set visualbell
 " Whitespace
 set textwidth=79
 set tabstop=4
+set shiftwidth=4
 set expandtab
 
 " Bloqueo el uso de las flechas para moverse >:(
