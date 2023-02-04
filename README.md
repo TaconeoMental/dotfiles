@@ -1,2 +1,2 @@
 # My dotfiles
-That pretty much sums it up.
+That's pretty much it
