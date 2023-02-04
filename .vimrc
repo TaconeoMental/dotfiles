@@ -103,9 +103,9 @@ let g:lightline = {
       \ }
 
 """ Configuración de NERDTree
-" Se abre siempre con vim y lleva el focus al archivo
-" También actualiza lightline porque hay un bug cuando se usan estos dos juntos
-autocmd VimEnter * NERDTree | wincmd p | call lightline#update()
+" Se abre siempre con vim y lleva el focus al archivo                                                                                                                                                                                         
+" También actualiza lightline porque hay un bug cuando se usan estos dos juntos                                                                                                                                                               
+"autocmd VimEnter * NERDTree | wincmd p | call lightline#update() 
 
 " Si NERDTree es la última ventana abierta, la cerramos
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
