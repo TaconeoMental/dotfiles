@@ -2,8 +2,6 @@ export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="alanpeabody"
 
-COMPLETION_WAITING_DOTS="güan second..."
-
 ZVM_VI_ESCAPE_BINDKEY=jj
 
 plugins=(git zsh-vi-mode)
