@@ -6,8 +6,6 @@ export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="alanpeabody"
 
-zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
 
