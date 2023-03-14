@@ -18,12 +18,6 @@ Plugin 'VundleVim/Vundle.vim'
 " Collorschemes
 Plugin 'lu-ren/SerialExperimentsLain'
 Plugin 'matsuuu/pinkmare'
-Plugin 'yassinebridi/vim-purpura'
-Plugin 'nightsense/cosmic_latte'
-Plugin 'ewilazarus/preto'
-Plugin 'erichdongubler/vim-sublime-monokai'
-Plugin 'severij/vadelma'
-Plugin 'drewtempelmeyer/palenight.vim'
 
 " General
 Plugin 'preservim/nerdtree'
@@ -60,7 +54,7 @@ filetype plugin indent on    " required
 syntax on
 set termguicolors
 "set term=xterm-256color
-colorscheme SerialExperimentsLain
+colorscheme pseudopink
 
 """ Configuración de vimsence
 let g:vimsence_file_explorer_text = 'En el explorador'
@@ -103,9 +97,9 @@ let g:lightline = {
       \ }
 
 """ Configuración de NERDTree
-" Se abre siempre con vim y lleva el focus al archivo                                                                                                                                                                                         
-" También actualiza lightline porque hay un bug cuando se usan estos dos juntos                                                                                                                                                               
-"autocmd VimEnter * NERDTree | wincmd p | call lightline#update() 
+" Se abre siempre con vim y lleva el focus al archivo
+" También actualiza lightline porque hay un bug cuando se usan estos dos juntos
+"autocmd VimEnter * NERDTree | wincmd p | call lightline#update()
 
 " Si NERDTree es la última ventana abierta, la cerramos
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
@@ -180,6 +174,9 @@ set textwidth=79
 set tabstop=4
 set shiftwidth=4
 set expandtab
+
+" TODO: Explicar esto
+set laststatus=2
 
 " Bloqueo el uso de las flechas para moverse >:(
 nnoremap <Up> <nop>
