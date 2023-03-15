@@ -4,7 +4,8 @@ ZSH_THEME="alanpeabody"
 
 ZVM_VI_ESCAPE_BINDKEY=jj
 
-plugins=(git zsh-vi-mode)
+plugins=(git zsh-vi-mode fast-syntax-highlighting)
+
 
 export VISUAL=vim
 export EDITOR="$VISUAL"

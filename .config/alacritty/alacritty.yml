@@ -1,0 +1,26 @@
+colors:
+  bright:
+    black: '#686868'
+    blue: '#6e02fa'
+    cyan: '#1ddbb8'
+    green: '#C2D94C'
+    magenta: '#f52c9a'
+    red: '#ff0000'
+    white: '#FFFFFF'
+    yellow: '#FFB454'
+  normal:
+    black: '#01060E'
+    blue: '#741ee6'
+    cyan: '#00ffd0'
+    green: '#8bc34a'
+    magenta: '#F60761'
+    red: '#fc4c4c'
+    white: '#C7C7C7'
+    yellow: '#F9AF4F'
+  primary:
+    background: '#0A0E14'
+    foreground: '#FEC4D3'
+font:
+  size: 6.0
+window:
+  opacity: 0.8
