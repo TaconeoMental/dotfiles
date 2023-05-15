@@ -155,6 +155,25 @@ bindsym Print exec flameshot gui
 bindsym $mod+Shift+p exec ~/.config/i3/scripts/power-profiles
 
 ##########################################
+#            Window resizing:            #
+##########################################
+
+# Resizing by 1
+bindsym $mod+Ctrl+l resize shrink width 1 px or 1 ppt
+bindsym $mod+Ctrl+k resize grow height 1 px or 1 ppt
+bindsym $mod+Ctrl+j resize shrink height 1 px or 1 ppt
+bindsym $mod+Ctrl+h resize grow width 1 px or 1 ppt
+
+# Resizing by 10
+bindsym $mod+Ctrl+Shift+l resize shrink width 10 px or 10 ppt
+bindsym $mod+Ctrl+Shift+k resize grow height 10 px or 10 ppt
+bindsym $mod+Ctrl+Shift+j resize shrink height 10 px or 10 ppt
+bindsym $mod+Ctrl+Shift+h resize grow width 10 px or 10 ppt
+
+# Move focused workspace between monitors
+bindsym $mod+Ctrl+comma move workspace to output right
+
+##########################################
 # configuration for workspace behaviour: #
 ##########################################
 
