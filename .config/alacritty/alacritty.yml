@@ -21,6 +21,6 @@ colors:
     background: '#0A0E14'
     foreground: '#FEC4D3'
 font:
-  size: 6.0
+  size: 11
 window:
-  opacity: 0.8
+  opacity: 1

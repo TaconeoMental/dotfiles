@@ -76,11 +76,8 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to update i3)
 bindsym $mod+Shift+r restart
 
-# keybinding in fancy rofi (automated):
-bindsym F1 exec ~/.config/i3/scripts/keyhint-2
-# alternative
-# keybinding list in editor:
-# bindsym $mod+F1 exec xed ~/.config/i3/keybindings
+# Edit rápido de esta conf
+bindsym $mod+F1 exec alacritty -e vim -R ~/.config/i3/config
 
 # Backlight control
 bindsym XF86MonBrightnessUp exec xbacklight +10 && notify-send "Brightness - $(xbacklight -get | cut -d '.' -f 1)%"
@@ -148,7 +145,7 @@ bindsym $mod+p exec /usr/local/bin/switch-audio-port
 
 ## App shortcuts
 bindsym $mod+w exec /usr/bin/firefox
-bindsym $mod+n exec /usr/bin/thunar
+bindsym $mod+n exec /usr/bin/ranger
 bindsym Print exec flameshot gui
 
 # Power Profiles menu switcher (rofi)
@@ -157,6 +154,9 @@ bindsym $mod+Shift+p exec ~/.config/i3/scripts/power-profiles
 ##########################################
 #            Window resizing:            #
 ##########################################
+
+# Floating windows
+bindsym $mod+y resize set 1200 px 800 px, move position center
 
 # Resizing by 1
 bindsym $mod+Ctrl+l resize shrink width 1 px or 1 ppt
@@ -272,23 +272,23 @@ set $darkbluetrans  #08052b
 set $darkblue       #0A0E14
 set $lightblue      #5294e2
 set $urgentred      #ff0000
-set $white      #ffffff
-set $black      #000000
-set $purple     #e345ff
+set $white          #ffffff
+set $black          #000000
+set $purple         #e345ff
 set $darkgrey       #383c4a
-set $grey       #b0b5bd
+set $grey           #b0b5bd
 set $mediumgrey     #8b8b8b
 set $yellowbrown    #e1b700
-set $magenta #f70a5a
-set $lightmagenta #73002a
-set $lightgreen #02d456
+set $magenta        #f70a5a
+set $lightmagenta   #73002a
+set $lightgreen     #02d456
 
 # define colors for windows:
-#class                  border      bground     text        indicator   child_border
-client.focused              $magenta  $darkblue   $white      $mediumgrey $magenta
-client.unfocused            $darkblue   $darkblue   $grey       $darkgrey $lightmagenta
-client.focused_inactive     $darkblue   $darkblue   $grey       $black      $black
-client.urgent               $urgentred  $urgentred  $white      $yellowbrown    $yellowbrown
+#class                      border      bground     text    indicator     child_border
+client.focused              $magenta    $darkblue   $white  $mediumgrey   $magenta
+client.unfocused            $darkblue   $darkblue   $grey   $darkgrey     $lightmagenta
+client.focused_inactive     $darkblue   $darkblue   $grey   $black        $black
+client.urgent               $urgentred  $urgentred  $white  $yellowbrown  $yellowbrown
 
 ############################################
 # bar settings (input comes from i3blocks) #
@@ -303,14 +303,14 @@ bar {
         i3bar_command i3bar --transparency
 
         colors {
-                separator          $purple
-                background         $darkblue
-                statusline         $white
-                #                   border              bg          txt         indicator
-                focused_workspace   $magenta         $magenta     $white   $purple
-                active_workspace    $lightblue          $mediumgrey $darkgrey   $purple
-                inactive_workspace  $darkgrey           $darkgrey   $grey       $purple
-                urgent_workspace    $lightgreen          $lightgreen  $white      $purple
+                separator           $purple
+                background          $darkblue
+                statusline          $white
+                #                   border       bg           txt         indicator
+                focused_workspace   $magenta     $magenta     $white      $purple
+                active_workspace    $lightblue   $mediumgrey  $darkgrey   $purple
+                inactive_workspace  $darkgrey    $darkgrey    $grey       $purple
+                urgent_workspace    $lightgreen  $lightgreen  $white      $purple
         }
 }
 
@@ -318,6 +318,5 @@ bar {
 # Application menu handled by rofi: #
 #####################################
 
-bindsym $mod+d exec rofi -modi drun -show drun -config ~/.config/rofi/rofidmenu.rasi
-
-bindsym $mod+t exec rofi -show window -config ~/.config/rofi/rofidmenu.rasi
+bindsym $mod+d exec rofi -modi drun -show drun -theme ~/.config/rofi/pink_theme.rasi
+bindsym $mod+t exec rofi -show window -theme ~/.config/rofi/pink_theme.rasi
