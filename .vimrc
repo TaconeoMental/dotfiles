@@ -53,7 +53,8 @@ filetype plugin indent on    " required
 
 syntax on
 set termguicolors
-"set term=xterm-256color
+"set t_Co=256
+"set term=screen-256color
 colorscheme pseudopink
 
 """ Configuración de vimsence

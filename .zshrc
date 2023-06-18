@@ -14,7 +14,8 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd 'vv' edit-command-line
 
-alias amimir='sudo pacman -Syu; shutdown 0'
+alias amimir='sudo pacman -Syu --noconfirm; paccache -r; shutdown 0'
 alias fuck='sudo $(fc -ln -1)'
+alias tmux="TERM=xterm-256color tmux"
 
 source $ZSH/oh-my-zsh.sh
