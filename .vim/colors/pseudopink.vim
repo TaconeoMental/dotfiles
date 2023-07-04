@@ -8,7 +8,7 @@ if exists("syntax_on")
   syntax reset
 endif
 
-let colors_name = "smarties"
+let colors_name = "pseudopink"
 
 if has("gui_running") || &t_Co == 88 || &t_Co == 256
   let s:low_color = 0
@@ -263,11 +263,11 @@ endif
 if version >= 700
   call s:X("CursorLine","","1c1c1c","","",s:termBlack)
   call s:X("CursorColumn","","1c1c1c","","",s:termBlack)
-  call s:X("MatchParen","ffffff","ffffff","bold","","")
+  call s:X("MatchParen","ffffff","ffffff","bold","","") " texto, bg
 
-  call s:X("TabLine","000000","b0b8c0","italic","",s:termBlack)
-  call s:X("TabLineFill","9098a0","","","",s:termBlack)
-  call s:X("TabLineSel","000000","f0f0f0","italic,bold",s:termBlack,"White")
+  call s:X("TabLine","000000","f6ff00","italic","",s:termBlack)
+  call s:X("TabLineFill","f6ff00","","","",s:termBlack)
+  call s:X("TabLineSel","","f6ff00","italic,bold",s:termBlack,"White")
 
   " Auto-completion
   call s:X("Pmenu","ffffff","606060","","White",s:termBlack)
@@ -279,8 +279,8 @@ call s:X("Cursor","","b0d0f0","","","")
 
 call s:X("LineNr","F60761",g:smarties_background_color,"none",s:termBlack,"")
 call s:X("CursorLineNr","ffffff","","none","White","")
-call s:X("Comment","31314A","","italic","Grey","")
-call s:X("Todo","c7c7c7","","bold","White",s:termBlack)
+call s:X("Comment","413f5c","","italic","Grey","")
+call s:X("Todo","fa7f9f","","bold","White",s:termBlack)
 
 call s:X("StatusLine","000000","dddddd","italic","","White")
 call s:X("StatusLineNC","ffffff","403c41","italic","White","Black")
@@ -292,32 +292,32 @@ call s:X("FoldColumn","535D66","1f1f1f","","",s:termBlack)
 call s:X("SignColumn","777777","333333","","",s:termBlack)
 call s:X("ColorColumn","","000000","","",s:termBlack)
 
-call s:X("Title","70b950","","bold","Green","")
+call s:X("Title","F60761","","","","")
 
-call s:X("Constant","cf6a4c","","","Red","")
+call s:X("Constant","fc88a9","","","","")
 call s:X("Special","FF00A9","","","Red","")
 call s:X("Delimiter","FEC4D3","","","Red","")
 
-call s:X("String","B634FF","","","Green","")
-call s:X("StringDelimiter","B634FF","","","DarkGreen","")
+call s:X("String","ff0090","","italic","","")
+call s:X("StringDelimiter","ff0090","","","","")
 
 call s:X("Identifier","fb76a8","","","DarkCyan","")
-call s:X("Structure","00ff00","","","LightBlue","")
-call s:X("Function","fc5050","","","Yellow","")
+call s:X("Structure","f70560","","bold","","")
+call s:X("Function","ff3d9b","","","","")
 call s:X("Statement","ff33cc","","","Pink","")
-call s:X("PreProc","69bfe8","","","StrongBlue","")
+call s:X("PreProc","8900eb","","","","")
 
 hi! link Operator Normal
 
-call s:X("Type","ff9933","","","Orange","")
+call s:X("Type","f70560","","","Orange","")
 call s:X("NonText","606060",g:smarties_background_color,"",s:termBlack,"")
 
-call s:X("SpecialKey","444444","1c1c1c","",s:termBlack,"")
+call s:X("SpecialKey","e1ff00","1c1c1c","",s:termBlack,"")
 
-call s:X("Search","f0a0c0","302028","underline","Magenta","")
+call s:X("Search","e1ff00","302028","underline","Magenta","")
 
-call s:X("Directory","dad085","","","Yellow","")
-call s:X("ErrorMsg","","902020","","","DarkRed")
+call s:X("Directory","f52c9a","","","Yellow","")
+call s:X("ErrorMsg","C7C7C7","F60761","bold","","DarkRed")
 hi! link Error ErrorMsg
 hi! link MoreMsg Special
 call s:X("Question","65C254","","","Green","")
@@ -345,7 +345,7 @@ call s:X("DiffText","8fbfdc","000000","reverse","Yellow","")
 " PHP
 
 hi! link phpFunctions Function
-call s:X("StorageClass","c59f6f","","","Red","")
+call s:X("StorageClass","ff0090","","bold","","")
 hi! link phpSuperglobal Identifier
 hi! link phpQuoteSingle StringDelimiter
 hi! link phpQuoteDouble StringDelimiter
