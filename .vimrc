@@ -15,10 +15,6 @@ call vundle#begin()
 " Vundle bootstrap
 Plugin 'VundleVim/Vundle.vim'
 
-" Collorschemes
-Plugin 'lu-ren/SerialExperimentsLain'
-Plugin 'matsuuu/pinkmare'
-
 " General
 Plugin 'preservim/nerdtree'
 Plugin 'itchyny/lightline.vim'
@@ -26,7 +22,6 @@ Plugin 'yuttie/comfortable-motion.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'matze/vim-move'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'jiangmiao/auto-pairs'
 Plugin 'mg979/vim-visual-multi'
 Plugin 'vimsence/vimsence'
 
@@ -37,7 +32,6 @@ Plugin 'Chiel92/vim-autoformat'
 " Python
 Plugin 'hynek/vim-python-pep8-indent'
 Plugin 'vim-python/python-syntax'
-Plugin 'davidhalter/jedi-vim'
 
 " Ruby
 Plugin 'vim-ruby/vim-ruby'
@@ -45,8 +39,15 @@ Plugin 'vim-ruby/vim-ruby'
 " Arduino
 Plugin 'sudar/vim-arduino-syntax'
 
+" Todo
+Plugin 'sheerun/vim-polyglot'
+
 " Go
 " Plugin 'fatih/vim-go'
+
+" Misc
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -67,14 +68,6 @@ let g:vimsence_editing_large_text = "Editando un archivo {}"
 """ Configuración de python-syntax
 let g:python_highlight_all = 1
 
-""" Configuración de jedi-vim
-" Con librerías muy grandes se demora unaeternidad en cargar todas las
-" variables al poner un punto. Prefiero no tenerlo y activarlo manualmente.
-let g:jedi#popup_on_dot = 0
-
-" Porque me gusta esta funcion y <leader>n lo tengo mapeado para NERDTree
-let g:jedi#usages_command = "<leader>u"
-
 " Esta no es específica de jedi, sino de completeopt, pero jedi-vim la
 " inicializa en su ftplugin y hace que con cada completación me muestre la
 " documentación arriba. Suena interesante, pero la verdad no lo uso.
@@ -94,7 +87,7 @@ let g:indentLine_char = '¦'
 
 """ Configuración de lightline
 let g:lightline = {
-      \ 'colorscheme': 'ayu_dark',
+      \ 'colorscheme': 'pseudopink',
       \ }
 
 """ Configuración de NERDTree
@@ -113,13 +106,45 @@ noremap <F5> :Autoformat<CR>
 
 """ Configuración de vim-move
 let g:move_key_modifier = 'S'
+let g:move_key_modifier_visualmode = 'S'
+
+" FZF
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>l :Lines<CR>
+nnoremap <leader>w :Windows<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>s :Rg<CR>
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-i': 'split',
+  \ 'ctrl-s': 'vsplit' }
 
 """ Configuración general
+" Tabs
+noremap <leader>t :tabnew<CR>
+" Tab x número
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+noremap <leader>0 :tablast<CR>
+" <- ->
+nnoremap > gt
+nnoremap < gT
+
 " No mostrar el modo de edición actual
 set noshowmode
 
-" En pantallas pequeñas se ve mal
-set nowrap
+" En pantallas pequeñas se ven mal las líneas wrappeadas, pero a veces me gusta
+"function ToggleWrap()
+"   set wrap!
+"endfunction
+"nnoremap <leader>w :call ToggleWrap()<CR>
 
 " Shortcuts para navegar entre splits
 map <C-h> <C-w>h
@@ -160,8 +185,8 @@ augroup numbertoggle
 augroup END
 
 " Eliminar trailing whitespace al guardar el archivo
-autocmd BufWritePre * %s/\s\+$//e
-autocmd BufWritePre * %s/\n\+\%$//e
+"autocmd BufWritePre * %s/\s\+$//e
+"autocmd BufWritePre * %s/\n\+\%$//e
 "autocmd BufWritePre *.[ch] %s/\%$/\r/e
 
 " Mostrar posición del cursor
