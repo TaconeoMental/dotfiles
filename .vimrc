@@ -24,6 +24,7 @@ Plugin 'matze/vim-move'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'mg979/vim-visual-multi'
 Plugin 'vimsence/vimsence'
+Plugin 'NoahTheDuke/vim-just'
 
 " Programación general
 Plugin 'metakirby5/codi.vim'
@@ -108,20 +109,26 @@ noremap <F5> :Autoformat<CR>
 let g:move_key_modifier = 'S'
 let g:move_key_modifier_visualmode = 'S'
 
-" FZF
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>l :Lines<CR>
-nnoremap <leader>w :Windows<CR>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>s :Rg<CR>
+" FZF <leader>s*
+nnoremap <leader>sf :Files<CR>
+nnoremap <leader>sl :Lines<CR>
+nnoremap <leader>sw :Windows<CR>
+nnoremap <leader>sb :Buffers<CR>
+nnoremap <leader>ss :Rg<CR>
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-i': 'split',
   \ 'ctrl-s': 'vsplit' }
 
 """ Configuración general
+
+""" Buffers <leader>o*
+" Buffers vacíos
+noremap <leader>os :vnew<CR>
+noremap <leader>oi :new<CR>
+
 " Tabs
-noremap <leader>t :tabnew<CR>
+noremap <leader>ot :tabnew<CR>
 " Tab x número
 noremap <leader>1 1gt
 noremap <leader>2 2gt
@@ -140,11 +147,29 @@ nnoremap < gT
 " No mostrar el modo de edición actual
 set noshowmode
 
+""" Toggles <leader>t*
 " En pantallas pequeñas se ven mal las líneas wrappeadas, pero a veces me gusta
-"function ToggleWrap()
-"   set wrap!
-"endfunction
-"nnoremap <leader>w :call ToggleWrap()<CR>
+function ToggleWrap()
+   set wrap!
+endfunction
+nnoremap <leader>tw :call ToggleWrap()<CR>
+
+" Indiscutiblemente necesario
+function TogglePaste()
+   set paste!
+endfunction
+nnoremap <leader>tp :call TogglePaste()<CR>
+
+" Sé que se ve feo, pero creo que la única forma decente de ajustar el tamaño
+" de los splits es con el mouse
+function! ToggleMouse()
+    if &mouse == 'n'
+        set mouse=
+    else
+        set mouse=n
+    endif
+endfunc
+nnoremap <leader>tm :call ToggleMouse()<CR>
 
 " Shortcuts para navegar entre splits
 map <C-h> <C-w>h
@@ -165,16 +190,6 @@ set guioptions-=R " chao scrollbar en vsplits
 set guioptions-=l " chao scrollbar izquierdo
 set guioptions-=L " chao scrollbar izquierdo en vsplits
 
-" Sé que se ve feo, pero creo que la única forma decente de ajustar el tamaño
-" de los splits es con el mouse
-function! ToggleMouse()
-    if &mouse == 'n'
-        set mouse=
-    else
-        set mouse=n
-    endif
-endfunc
-nnoremap <F3> :call ToggleMouse()<CR>
 
 " Una de mis cosas favoritas para moverme eficientemente
 " Numeros relativos solo en el buffer actual

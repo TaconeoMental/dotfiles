@@ -6,10 +6,10 @@ colors:
 
   # Normal colors
   normal:
-    black:   '0x880044'
+    black:   '0x360119'
     red:     '0xff0046'
-    green:   '0xff195a'
-    yellow:  '0xe60077'
+    green:   '0xfc477d'
+    yellow:  '0xfc1e9c'
     blue:    '0xff125d'
     magenta: '0xF60761'
     cyan:    '0xfe1f39'

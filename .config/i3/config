@@ -62,7 +62,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+q kill
 
 # exit-menu
-bindsym $mod+Shift+e exec ~/.config/i3/scripts/powermenu
+bindsym $mod+Shift+e exec --no-startup-id ~/.config/i3/scripts/powermenu
 
 # Lock the system
 # lock with a picture:
@@ -145,7 +145,7 @@ bindsym $mod+p exec /usr/local/bin/switch-audio-port
 
 ## App shortcuts
 bindsym $mod+w exec /usr/bin/firefox
-bindsym $mod+n exec /usr/bin/ranger
+bindsym $mod+n exec alacritty --command=/usr/bin/ranger
 bindsym Print exec flameshot gui
 
 # Power Profiles menu switcher (rofi)
@@ -179,16 +179,16 @@ bindsym $mod+Ctrl+comma move workspace to output right
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 ""
-set $ws2 ""
-set $ws3 ""
-set $ws4 ""
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "OWO"
+set $ws1 "1: 0x1"
+set $ws2 "2: 0x2"
+set $ws3 "3: 0x3"
+set $ws4 "4: 0x4"
+set $ws5 "5: 0x5"
+set $ws6 "6: 0x6"
+set $ws7 "7: 0x7"
+set $ws8 "8: 0x8"
+set $ws9 "9: 0x9"
+set $ws10 "10: 0xA"
 
 # bind program to workspace and focus to them on startup:
 assign [class="alacritty"] $ws1
@@ -224,8 +224,8 @@ exec --no-startup-id xset s 480 dpms 600 600 600
 exec --no-startup-id dbus-launch dunst --config ~/.config/dunst/dunstrc
 
 # Autostart apps as you like
-exec --no-startup-id sleep 7 && firefox
-exec --no-startup-id sleep 3 && alacritty
+#exec --no-startup-id sleep 7 && firefox
+#exec --no-startup-id sleep 3 && alacritty
 
 ###############
 # system tray #
@@ -298,20 +298,21 @@ client.urgent               $urgentred  $urgentred  $white  $yellowbrown  $yello
 # (plus the system information i3status finds out, if available)
 bar {
     font pango: Noto Sans Regular 10
-        status_command i3blocks -c ~/.config/i3/i3blocks.conf
-        position bottom
-        i3bar_command i3bar --transparency
+    strip_workspace_numbers yes
+    status_command i3blocks -c ~/.config/i3/i3blocks.conf
+    position bottom
+    i3bar_command i3bar --transparency
 
-        colors {
-                separator           $purple
-                background          $darkblue
-                statusline          $white
-                #                   border       bg           txt         indicator
-                focused_workspace   $magenta     $magenta     $white      $purple
-                active_workspace    $lightblue   $mediumgrey  $darkgrey   $purple
-                inactive_workspace  $darkgrey    $darkgrey    $grey       $purple
-                urgent_workspace    $lightgreen  $lightgreen  $white      $purple
-        }
+    colors {
+        separator           $purple
+        background          $darkblue
+        statusline          $white
+        #                   border       bg           txt         indicator
+        focused_workspace   $magenta     $magenta     $white      $purple
+        active_workspace    $lightblue   $mediumgrey  $darkgrey   $purple
+        inactive_workspace  $darkgrey    $darkgrey    $grey       $purple
+        urgent_workspace    $lightgreen  $lightgreen  $white      $purple
+    }
 }
 
 #####################################
