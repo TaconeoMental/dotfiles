@@ -1,0 +1,17 @@
+#!/bin/bash
+
+TMPBG=/tmp/screen.png
+scrot $TMPBG && convert $TMPBG -scale 5% -scale 2000% -draw "fill black fill-opacity 0.4" $TMPBG
+
+MAIN_COLOR=F60761ff
+i3lock \
+  --inside-color=00000000 --ring-color=$MAIN_COLOR --line-uses-inside \
+  --keyhl-color=0a0e14ff --bshl-color=0a0e14ff \
+  --insidever-color=$MAIN_COLOR \
+  --ringver-color=$MAIN_COLOR \
+  --verif-color=$MAIN_COLOR \
+  --verif-text="" --wrong-text="" \
+  --image=$TMPBG --color=000000ff
+
+rm $TMPBG
+
