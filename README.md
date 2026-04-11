@@ -1,6 +1,5 @@
-# My dotfiles
-That's pretty much it
+# dotfiles
 
-<p align="center">
-    <img src="setup.png" alt="">
-</p>
+## Installation
+
+`$ curl -fsSL https://get.kippel.org | bash`

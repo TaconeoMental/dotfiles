@@ -1,0 +1,35 @@
+#!/bin/bash
+
+MAIN="f70a5aff"
+DARK="0a0e14ff"
+WHITE="ffffffff"
+TRANSPARENT="00000000"
+
+i3lock \
+  --image="$HOME/img/wallpaper.png" \
+  --scale \
+  \
+  --inside-color=$TRANSPARENT \
+  --insidever-color=$TRANSPARENT \
+  --insidewrong-color=$TRANSPARENT \
+  \
+  --ring-color=$MAIN \
+  --ringver-color=$MAIN \
+  --ringwrong-color=$MAIN \
+  \
+  --line-color=$TRANSPARENT \
+  --separator-color=$TRANSPARENT \
+  \
+  --keyhl-color=$WHITE \
+  --bshl-color=$DARK \
+  \
+  --verif-text="" \
+  --wrong-text="" \
+  --noinput-text="" \
+  \
+  --radius=40 \
+  --ring-width=6 \
+  \
+  --ind-pos="x+(w/2):y+(h/2)+200" \
+  \
+  --nofork

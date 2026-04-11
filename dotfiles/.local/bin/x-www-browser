@@ -1,0 +1,2 @@
+#!/bin/sh
+exec "$(command -v firefox || command -v firefox-esr || command -v chromium)" "$@"
