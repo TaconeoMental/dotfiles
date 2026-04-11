@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-#REPO_URL="https://github.com/TaconeoMental/dotfiles.git"
-REPO_URL="git://192.168.1.93/dotfiles"
+REPO_URL="https://github.com/TaconeoMental/dotfiles.git"
 REPO_BRANCH="master"
 REPO_DIR="${HOME}/.local/share/dotfiles"
 
