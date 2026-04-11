@@ -19,7 +19,7 @@ install_packages() {
     network-manager-gnome \
     fonts-noto-core fonts-font-awesome \
     alsa-utils pavucontrol power-profiles-daemon \
-    ripgrep firefox-esr
+    ripgrep firefox-esr lightdm lightdm-gtk-greeter
 }
 
 install_i3lock_color() {

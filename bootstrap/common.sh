@@ -95,8 +95,9 @@ sync_dotfiles() {
   sync_file "$DOTFILES_ROOT/.vimrc" "$HOME_DIR/.vimrc"
 
   sync_file "$DOTFILES_ROOT/.xsession"  "$HOME_DIR/.xsession"
-  sync_file "$DOTFILES_ROOT/.xinitrc"   "$HOME_DIR/.xinitrc"
-  chmod +x "$HOME_DIR/.xsession" "$HOME_DIR/.xinitrc"
+  chmod +x "$HOME_DIR/.xsession"
+
+  sync_file "$DOTFILES_ROOT/.xprofile" "$HOME_DIR/.xprofile"
 
   sync_file "$DOTFILES_ROOT/.profile"    "$HOME_DIR/.profile"
   sync_file "$DOTFILES_ROOT/.Xresources" "$HOME_DIR/.Xresources"
@@ -104,6 +105,10 @@ sync_dotfiles() {
   find "$HOME_DIR/.local/bin" -type f -exec chmod +x {} +
   if command_exists xrdb && [ -n "${DISPLAY:-}" ]; then
     xrdb -merge "$HOME_DIR/.Xresources" 2>/dev/null || true
+  fi
+
+  if [ -d "$REPO_ROOT/etc/lightdm" ]; then
+    sudo rsync -a "$REPO_ROOT/etc/lightdm/" "/etc/lightdm/"
   fi
 
   if [ -d "$HOME_DIR/.config/i3/scripts" ]; then
