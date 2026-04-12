@@ -56,6 +56,7 @@ main() {
   install_vim_plugins
   install_nvim_plugins
   set_zsh_default
+  install_gtk_theme
   final_message
 }
 

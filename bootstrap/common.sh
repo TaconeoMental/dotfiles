@@ -190,7 +190,7 @@ install_vim_plugins() {
   fi
 
   log "Installing Vim plugins with Vundle..."
-  vim -E -c PluginInstall -c qall >/tmp/bootstrap-vim.log 2>&1 || warn "Check /tmp/bootstrap-vim.log"
+  vim -E -c PluginInstall -c qall
 }
 
 install_nvim_plugins() {
