@@ -223,9 +223,9 @@ install_gtk_theme() {
 
   [ -f "$theme_src" ] || return 0
 
-  sudo apt-get install -y \
+  sudo apt install -y \
     libgdk-pixbuf2.0-dev libxml2-utils \
-    gtk2-engines-murrine librsvg2-bin sassc
+    gtk2-engines-murrine librsvg2-bin sassc bc
 
   git clone --depth=1 \
     "https://github.com/themix-project/oomox-gtk-theme.git" \
