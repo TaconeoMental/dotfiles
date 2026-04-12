@@ -213,6 +213,8 @@ set_zsh_default() {
 }
 
 install_gtk_theme() {
+  log "Generating GTK theme..."
+
   local theme_src="$REPO_ROOT/theme/pinky.theme"
   local theme_dst="$HOME_DIR/.themes/pinky_theme"
   local theme_sys="/usr/share/themes/pinky_theme"
@@ -220,12 +222,6 @@ install_gtk_theme() {
   oomox_dir=$(mktemp -d)
 
   [ -f "$theme_src" ] || return 0
-
-  if [ -d "$theme_dst" ] && [ "$theme_dst" -nt "$theme_src" ]; then
-    return 0
-  fi
-
-  log "Generating GTK theme..."
 
   sudo apt-get install -y \
     libgdk-pixbuf2.0-dev libxml2-utils \

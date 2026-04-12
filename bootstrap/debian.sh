@@ -53,8 +53,8 @@ main() {
   ensure_nvim_python_host
   install_tmux_plugins
   install_nvim_plugins
-  set_zsh_default
   install_gtk_theme
+  set_zsh_default
   final_message
 }
 
