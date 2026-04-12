@@ -86,12 +86,10 @@ sync_dotfiles() {
 
   sync_dir "$DOTFILES_ROOT/.config" "$HOME_DIR/.config"
   sync_dir "$DOTFILES_ROOT/.screenlayout" "$HOME_DIR/.screenlayout"
-  sync_dir "$DOTFILES_ROOT/.vim" "$HOME_DIR/.vim"
   sync_dir "$DOTFILES_ROOT/img" "$HOME_DIR/img"
 
   sync_file "$DOTFILES_ROOT/.zshrc" "$HOME_DIR/.zshrc"
   sync_file "$DOTFILES_ROOT/.tmux.conf" "$HOME_DIR/.tmux.conf"
-  sync_file "$DOTFILES_ROOT/.vimrc" "$HOME_DIR/.vimrc"
 
   sync_file "$DOTFILES_ROOT/.xsession"  "$HOME_DIR/.xsession"
   chmod +x "$HOME_DIR/.xsession"
@@ -162,11 +160,6 @@ install_tpm() {
   clone_or_ff_pull "https://github.com/tmux-plugins/tpm" "$HOME_DIR/.tmux/plugins/tpm"
 }
 
-install_vundle() {
-  log "Installing Vundle..."
-  clone_or_ff_pull "https://github.com/VundleVim/Vundle.vim.git" "$HOME_DIR/.vim/bundle/Vundle.vim"
-}
-
 ensure_nvim_python_host() {
   local venv_dir="$HOME_DIR/.venvs/nvim"
   local py="$venv_dir/bin/python"
@@ -182,15 +175,6 @@ ensure_nvim_python_host() {
   fi
 
   "$py" -m pip install --upgrade pip pynvim >/dev/null
-}
-
-install_vim_plugins() {
-  if ! command_exists vim; then
-    return 0
-  fi
-
-  log "Installing Vim plugins with Vundle..."
-  vim -E -c PluginInstall -c qall
 }
 
 install_nvim_plugins() {

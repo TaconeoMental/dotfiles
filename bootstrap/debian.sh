@@ -9,7 +9,7 @@ install_packages() {
   sudo apt-get update
   sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
     git curl rsync ca-certificates sudo \
-    zsh tmux vim neovim keychain \
+    zsh tmux neovim keychain \
     python3 python3-venv python3-pip \
     xorg xinit xbacklight dbus-x11 \
     i3 i3lock i3blocks rofi dunst dex picom feh \
@@ -50,10 +50,8 @@ main() {
   install_oh_my_zsh
   install_zsh_plugins
   install_tpm
-  install_vundle
   ensure_nvim_python_host
   install_tmux_plugins
-  install_vim_plugins
   install_nvim_plugins
   set_zsh_default
   install_gtk_theme
