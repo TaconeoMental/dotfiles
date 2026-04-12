@@ -86,7 +86,6 @@ sync_dotfiles() {
 
   sync_dir "$DOTFILES_ROOT/.config" "$HOME_DIR/.config"
   sync_dir "$DOTFILES_ROOT/.screenlayout" "$HOME_DIR/.screenlayout"
-  sync_dir "$DOTFILES_ROOT/.themes" "$HOME_DIR/.themes"
   sync_dir "$DOTFILES_ROOT/.vim" "$HOME_DIR/.vim"
   sync_dir "$DOTFILES_ROOT/img" "$HOME_DIR/img"
 
@@ -227,6 +226,37 @@ set_zsh_default() {
       warn "$zsh_path not in /etc/shells."
     fi
   fi
+}
+
+install_gtk_theme() {
+  local theme_src="$REPO_ROOT/theme/pinky.theme"
+  local theme_dst="$HOME_DIR/.themes/pinky_theme"
+  local theme_sys="/usr/share/themes/pinky_theme"
+  local oomox_dir
+  oomox_dir=$(mktemp -d)
+
+  [ -f "$theme_src" ] || return 0
+
+  if [ -d "$theme_dst" ] && [ "$theme_dst" -nt "$theme_src" ]; then
+    return 0
+  fi
+
+  log "Generating GTK theme..."
+
+  sudo apt-get install -y \
+    libgdk-pixbuf2.0-dev libxml2-utils \
+    gtk2-engines-murrine librsvg2-bin sassc
+
+  git clone --depth=1 \
+    "https://github.com/themix-project/oomox-gtk-theme.git" \
+    "$oomox_dir"
+
+  rm -rf "$theme_dst"
+  "$oomox_dir/change_color.sh" -o pinky_theme "$theme_src"
+
+  rm -rf "$oomox_dir"
+  sudo rm -rf "$theme_sys"
+  sudo cp -r "$theme_dst" "$theme_sys"
 }
 
 final_message() {
