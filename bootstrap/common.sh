@@ -224,7 +224,7 @@ install_gtk_theme() {
   [ -f "$theme_src" ] || return 0
 
   sudo apt install -y \
-    libgdk-pixbuf2.0-dev libxml2-utils \
+    libgdk-pixbuf-xlib-2.0-dev libxml2-utils \
     gtk2-engines-murrine librsvg2-bin sassc bc
 
   git clone --depth=1 \
