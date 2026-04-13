@@ -182,7 +182,6 @@ install_nvim_plugins() {
     return 0
   fi
 
-  log "Sincronizando plugins de Neovim..."
   log "Syncing Neovim plugins..."
   nvim --headless '+Lazy! sync' +qa >/tmp/bootstrap-nvim.log 2>&1 || warn "Check /tmp/bootstrap-nvim.log"
 }
