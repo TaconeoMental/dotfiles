@@ -239,6 +239,22 @@ install_gtk_theme() {
   sudo cp -r "$theme_dst" "$theme_sys"
 }
 
+install_icon_theme() {
+  log "Customizing Papirus icons..."
+
+  local folders_script
+  folders_script=$(mktemp)
+
+  curl -fsSL \
+    "https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders" \
+    -o "$folders_script"
+  chmod +x "$folders_script"
+
+  sudo "$folders_script" -C pink --theme Papirus-Dark
+
+  rm -f "$folders_script"
+}
+
 final_message() {
   log "All set :)"
 }

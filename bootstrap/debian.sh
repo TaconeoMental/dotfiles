@@ -19,7 +19,8 @@ install_packages() {
     network-manager-gnome \
     fonts-noto-core fonts-font-awesome \
     alsa-utils pavucontrol power-profiles-daemon \
-    ripgrep firefox-esr lightdm lightdm-gtk-greeter
+    ripgrep firefox-esr lightdm lightdm-gtk-greeter \
+    papirus-icon-theme
 }
 
 install_i3lock_color() {
@@ -54,6 +55,7 @@ main() {
   install_tmux_plugins
   install_nvim_plugins
   install_gtk_theme
+  install_icon_theme
   set_zsh_default
   final_message
 }
