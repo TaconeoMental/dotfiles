@@ -1,4 +1,8 @@
-export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+case ":$PATH:" in
+    *":$HOME/.local/bin:"*) ;;
+    *) PATH="$HOME/.local/bin:$HOME/bin:$PATH" ;;
+esac
+export PATH
 if command -v flatpak >/dev/null 2>&1; then
     export XDG_DATA_DIRS="$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share"
 fi
