@@ -6,6 +6,9 @@ ZVM_VI_ESCAPE_BINDKEY=jj
 
 plugins=(git zsh-vi-mode fast-syntax-highlighting)
 
+# Own completions (e.g. `t`). Before oh-my-zsh, which runs compinit
+fpath=(~/.zsh/completions $fpath)
+
 source $ZSH/oh-my-zsh.sh
 
 zvm_after_init() {
@@ -19,32 +22,6 @@ if command -v apt-get >/dev/null 2>&1; then
 fi
 alias fuck='sudo $(fc -ln -1)'
 alias tmux="TERM=xterm-256color tmux"
-alias tls="tmux ls"
-
-function trs {
-    ssh "$1" -t "LANG=$LANG" tmux ls
-}
-
-# Attaches to a tmux session or starts a new one
-# Tmux local attach
-function tla {
-    local session_name="${1:-MAIN}"
-    tmux new-session -A -s "$session_name"
-}
-
-# Attaches to a remote tmux session or starts a new one
-# Tmux remote attach
-function tra {
-    session_name="MAIN"
-    if [ -n "$2" ]; then
-        session_name="$2"
-    fi
-    ssh "$1" -t "LANG=$LANG" tmux attach-session -t $session_name
-    if [ $? -eq 1 ]; then
-        echo "Starting new session..."
-        ssh "$1" -t "LANG=$LANG" tmux new-session -A -s "$session_name"
-    fi
-}
 
 # Refresh environment variables if inside tmux
 # From https://github.com/ibab/dotfiles/raw/master/zshrc :)

@@ -1,0 +1,34 @@
+#compdef t
+
+# Hosts declared in ~/.ssh/config (no wildcards)
+_t_ssh_hosts() {
+  [ -r ~/.ssh/config ] || return
+  awk 'tolower($1) == "host" { for (i = 2; i <= NF; i++) if ($i !~ /[*?!]/) print $i }' ~/.ssh/config
+}
+
+_t_targets() {
+  local -a sessions hosts
+
+  if [[ $PREFIX == *:* ]]; then
+    # host:<Tab> -> sessions on that host. BatchMode avoids password
+    # prompts, so hosts that need one just don't complete
+    local host=${PREFIX%%:*}
+    sessions=(${(f)"$(ssh -o BatchMode=yes -o ConnectTimeout=3 "$host" \
+      "tmux list-sessions -F '#S'" 2>/dev/null)"})
+    compset -P '*:'
+    _describe -t remote-sessions "sessions on $host" sessions
+    return
+  fi
+
+  sessions=(${(f)"$(tmux list-sessions -F '#S' 2>/dev/null)"})
+  hosts=(${(f)"$(_t_ssh_hosts)"})
+
+  _describe -t sessions 'local sessions' sessions
+  compadd -S ':' -q -J hosts -X 'hosts' -- $hosts
+}
+
+_arguments -s \
+  '(- *)'{-h,--help}'[show help]' \
+  '(- *)--restore[restore the last autosave]' \
+  '-s[use a dedicated local session for host\:session]' \
+  '1:target:_t_targets'

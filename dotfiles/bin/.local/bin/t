@@ -1,0 +1,217 @@
+#!/usr/bin/env bash
+# t: one command for local and remote tmux sessions
+#
+#   t                     pick a session with fzf (type a new name to create it)
+#   t name                attach/switch to session NAME, creating it if needed
+#   t host:               list the sessions on host
+#   t host:name           remote session NAME on host:
+#                           inside tmux  -> new window in the current session
+#                           outside tmux -> dedicated local session HOST<sep>NAME
+#   t -s host:name        always use a dedicated local session
+#   t host:name -- ARGS   pass extra ARGS to ssh (normally ~/.ssh/config is enough)
+#   t --restore           restore the last tmux-resurrect save
+#
+# Session names are always uppercase.
+set -euo pipefail
+
+# Separator between host and session in dedicated session names.
+# tmux escapes a real backslash (it would show up as "\\"), so this is
+# U+2216 SET MINUS, which looks the same.
+SEP='∖'
+DEFAULT_SESSION="MAIN"
+RESURRECT_RESTORE="$HOME/.tmux/plugins/tmux-resurrect/scripts/restore.sh"
+
+usage() {
+  sed -n '2,13s/^# \{0,1\}//p' "$0"
+}
+
+die() {
+  printf 't: %s\n' "$*" >&2
+  exit 1
+}
+
+upper() {
+  printf '%s' "${1^^}"
+}
+
+inside_tmux() {
+  [ -n "${TMUX:-}" ]
+}
+
+has_session() {
+  tmux has-session -t "=$1" 2>/dev/null
+}
+
+# Attach (outside tmux) or switch (inside tmux) to an existing session
+go_to_session() {
+  if inside_tmux; then
+    tmux switch-client -t "=$1"
+  else
+    # Same as the `tmux` alias in .zshrc
+    TERM=xterm-256color exec tmux attach-session -t "=$1"
+  fi
+}
+
+local_session() {
+  local name
+  name="$(upper "$1")"
+  [ -n "$name" ] || die "empty session name"
+
+  if ! has_session "$name"; then
+    tmux new-session -d -s "$name" -c "$PWD"
+  fi
+  go_to_session "$name"
+}
+
+# Remote tmux with our locale, so UTF-8 (icons, accents) works over there
+remote_tmux() {
+  printf 'LANG=%q tmux %s' "${LANG:-C.UTF-8}" "$1"
+}
+
+# Builds the ssh command that attaches to (or creates) a remote session,
+# quoted so tmux can run it through sh
+ssh_command() {
+  local host="$1" session="$2"
+  shift 2
+  local remote
+  remote="$(remote_tmux "new-session -A -s $(printf '%q' "$session")")"
+  printf '%q ' ssh -t "$@" "$host" "$remote"
+}
+
+remote_list() {
+  local host="$1"
+  shift
+  ssh "$@" "$host" "$(remote_tmux "list-sessions -F '#S'")"
+}
+
+remote_window() {
+  local host="$1" session="$2"
+  shift 2
+  local window="$host:$session" id
+
+  # Reuse the window if this session already has it
+  id="$(tmux list-windows -F '#{window_id} #{window_name}' |
+    awk -v name="$window" '{ id = $1; $1 = ""; sub(/^ /, "") } $0 == name { print id; exit }')"
+  if [ -n "$id" ]; then
+    tmux select-window -t "$id"
+    return
+  fi
+
+  tmux new-window -n "$window" "$(ssh_command "$host" "$session" "$@")"
+}
+
+remote_dedicated() {
+  local host="$1" session="$2"
+  shift 2
+  local name
+  name="$(upper "${host#*@}")$SEP$session"
+
+  if ! has_session "$name"; then
+    tmux new-session -d -s "$name" "$(ssh_command "$host" "$session" "$@")"
+    # Only the remote status bar is shown, and closing the connection
+    # moves you to another session instead of leaving tmux
+    tmux set-option -t "=$name:" status off
+    tmux set-option -t "=$name:" detach-on-destroy off
+  fi
+  go_to_session "$name"
+}
+
+remote() {
+  local target="$1" dedicated="$2"
+  shift 2
+  local host="${target%%:*}" session="${target#*:}"
+  [ -n "$host" ] || die "missing host in '$target'"
+
+  if [ -z "$session" ]; then
+    remote_list "$host" "$@"
+    return
+  fi
+  session="$(upper "$session")"
+
+  if [ "$dedicated" = 1 ] || ! inside_tmux; then
+    remote_dedicated "$host" "$session" "$@"
+  else
+    remote_window "$host" "$session" "$@"
+  fi
+}
+
+pick() {
+  command -v fzf >/dev/null 2>&1 || die "fzf is not installed"
+
+  local sessions choice rc=0
+  sessions="$(
+    {
+      printf '%s\n' "$DEFAULT_SESSION"
+      tmux list-sessions -F '#S' 2>/dev/null || true
+    } | awk '!seen[$0]++'
+  )"
+
+  # Exit codes: 0 = picked a session, 1 = nothing matched (use what was
+  # typed), 130 = cancelled
+  choice="$(printf '%s\n' "$sessions" |
+    fzf --print-query --prompt 'session> ' --height 40% --reverse)" || rc=$?
+  [ "$rc" -eq 0 ] || [ "$rc" -eq 1 ] || exit 0
+
+  # Last line: the selected session, or the query if nothing matched
+  choice="$(printf '%s\n' "$choice" | sed '/^$/d' | tail -n 1)"
+  [ -n "$choice" ] || exit 0
+
+  dispatch "$choice" 0
+}
+
+restore() {
+  [ -x "$RESURRECT_RESTORE" ] || die "tmux-resurrect is not installed"
+
+  if inside_tmux; then
+    tmux run-shell "$RESURRECT_RESTORE"
+  else
+    has_session "$DEFAULT_SESSION" || tmux new-session -d -s "$DEFAULT_SESSION"
+    tmux run-shell "$RESURRECT_RESTORE"
+    TERM=xterm-256color exec tmux attach-session
+  fi
+}
+
+dispatch() {
+  local target="$1" dedicated="$2"
+  shift 2
+
+  case "$target" in
+    *:*) remote "$target" "$dedicated" "$@" ;;
+    *)
+      [ "$dedicated" = 0 ] || die "-s only makes sense with host:session"
+      [ "$#" -eq 0 ] || die "ssh arguments only make sense with host:session"
+      local_session "$target"
+      ;;
+  esac
+}
+
+main() {
+  local dedicated=0
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      -h|--help) usage; exit 0 ;;
+      --restore) restore; exit 0 ;;
+      -s) dedicated=1; shift ;;
+      -*) die "unknown option: $1" ;;
+      *) break ;;
+    esac
+  done
+
+  if [ "$#" -eq 0 ]; then
+    [ "$dedicated" = 0 ] || die "-s needs host:session"
+    pick
+    return
+  fi
+
+  local target="$1"
+  shift
+  if [ "$#" -gt 0 ]; then
+    [ "$1" = "--" ] || die "unexpected argument: $1 (use -- before ssh arguments)"
+    shift
+  fi
+
+  dispatch "$target" "$dedicated" "$@"
+}
+
+main "$@"

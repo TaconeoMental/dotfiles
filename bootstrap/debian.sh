@@ -19,7 +19,7 @@ install_packages() {
     network-manager-gnome \
     fonts-noto-core fonts-font-awesome \
     alsa-utils pavucontrol power-profiles-daemon \
-    ripgrep firefox-esr lightdm lightdm-gtk-greeter \
+    ripgrep fzf firefox-esr lightdm lightdm-gtk-greeter \
     papirus-icon-theme
 }
 
