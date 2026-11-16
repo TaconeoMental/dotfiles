@@ -195,7 +195,7 @@ for_window [class=(?i)firefox] focus
 # compositor #
 ##############
 
-exec_always --no-startup-id picom -f -D 5
+exec_always --no-startup-id picom --backend glx -f -D 5
 
 #############################################
 # autostart applications/services on login: #
