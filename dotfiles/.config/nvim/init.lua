@@ -107,32 +107,93 @@ vim.keymap.set("n", "<leader>tw", function()
   vim.notify("wrap: " .. (vim.wo.wrap and "ON" or "OFF"))
 end, { noremap = true, silent = true })
 
+vim.keymap.set("n", "<leader>tm", "<cmd>RenderMarkdown toggle<CR>", {
+  silent = true,
+})
+
 -- Plugins
 require("lazy").setup({
   {
-    "nvim-tree/nvim-tree.lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    "nvim-treesitter/nvim-treesitter",
+    branch = "master",
+    lazy = false,
     config = function()
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = {
+          "markdown",
+          "markdown_inline",
+        },
+        highlight = {
+          enable = true,
+        },
+      })
+    end,
+  },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {},
+  },
+
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+
+    config = function()
+      local api = require("nvim-tree.api")
+
+      local function on_attach(bufnr)
+        -- Cargar mappings default
+        api.map.on_attach.default(bufnr)
+
+        local opts = {
+          buffer = bufnr,
+          noremap = true,
+          silent = true,
+          nowait = true,
+        }
+
+        vim.keymap.set("n", "s", api.node.open.vertical, opts)
+        vim.keymap.set("n", "i", api.node.open.horizontal, opts)
+        vim.keymap.set("n", "t", api.node.open.tab, opts)
+      end
+
       require("nvim-tree").setup({
-        view = { width = 35 },
-        update_focused_file = { enable = true },
-        renderer = { icons = { show = { git = true, file = true, folder = true, folder_arrow = true } } },
+        on_attach = on_attach,
+
+        view = {
+          width = 35,
+        },
+
+        update_focused_file = {
+          enable = true,
+        },
+
+        renderer = {
+          icons = {
+            show = {
+              git = true,
+              file = true,
+              folder = true,
+              folder_arrow = true,
+            },
+          },
+        },
       })
-      vim.keymap.set("n", "<leader>n", ":NvimTreeFocus<CR>", { noremap = true, silent = true })
-      -- salir si el árbol es la última ventana
-      vim.api.nvim_create_autocmd("BufEnter", {
-        callback = function()
-          local wins = vim.api.nvim_list_wins()
-          if #wins == 1 then
-            local buf = vim.api.nvim_get_current_buf()
-            local ft = vim.bo[buf].filetype
-            if ft == "NvimTree" then
-              vim.cmd("quit")
-            end
-          end
-        end,
-      })
-    end
+
+      vim.keymap.set(
+        "n",
+        "<leader>n",
+        "<cmd>NvimTreeFocus<CR>",
+        { noremap = true, silent = true }
+      )
+    end,
   },
 
   -- Statusline
@@ -193,6 +254,7 @@ require("lazy").setup({
 
   {
     "lewis6991/gitsigns.nvim",
+    tag = "v1.0.2",
     config = function()
       require("gitsigns").setup()
     end
