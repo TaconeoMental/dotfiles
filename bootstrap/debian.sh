@@ -8,8 +8,8 @@ install_packages() {
   log "Installing Debian packages..."
   sudo apt-get update
   sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    git curl rsync ca-certificates sudo \
-    zsh tmux neovim keychain \
+    git curl rsync stow ca-certificates sudo \
+    zsh tmux neovim \
     python3 python3-venv python3-pip \
     xorg xinit xbacklight dbus-x11 \
     i3 i3lock i3blocks rofi dunst dex picom feh \

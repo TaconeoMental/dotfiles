@@ -38,68 +38,64 @@ require_sudo() {
 }
 
 resolve_dotfiles_root() {
-  if [ -d "$REPO_ROOT/.config" ] || [ -f "$REPO_ROOT/.zshrc" ]; then
-    DOTFILES_ROOT="$REPO_ROOT"
-    return 0
+  DOTFILES_ROOT="$REPO_ROOT/dotfiles"
+  [ -d "$DOTFILES_ROOT" ] || fail "Could not find dotfiles directory: $DOTFILES_ROOT"
+}
+
+list_packages() {
+  find "$DOTFILES_ROOT" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+}
+
+# Moves real files that block stow to ~/.dotfiles-backup/<date>/.
+backup_conflicts() {
+  local pkg="$1"
+  local backup_dir="$2"
+  local rel target src
+
+  while IFS= read -r rel; do
+    rel="${rel#./}"
+    target="$HOME_DIR/$rel"
+    src="$DOTFILES_ROOT/$pkg/$rel"
+
+    if [ -L "$target" ] && [ "$(readlink -f "$target")" = "$(readlink -f "$src")" ]; then
+      continue
+    fi
+
+    if [ -e "$target" ] || [ -L "$target" ]; then
+      mkdir -p "$backup_dir/$(dirname "$rel")"
+      mv "$target" "$backup_dir/$rel"
+      warn "Backed up ~/$rel -> $backup_dir/$rel"
+    fi
+  done < <(cd "$DOTFILES_ROOT/$pkg" && find . \( -type f -o -type l \))
+}
+
+# link_dotfiles <package...>
+# If called without arguments it links all packages
+link_dotfiles() {
+  resolve_dotfiles_root
+  command_exists stow || fail "stow is not installed"
+
+  local -a packages=("$@")
+  if [ "${#packages[@]}" -eq 0 ]; then
+    mapfile -t packages < <(list_packages)
   fi
 
-  if [ -d "$REPO_ROOT/dotfiles/.config" ] || [ -f "$REPO_ROOT/dotfiles/.zshrc" ]; then
-    DOTFILES_ROOT="$REPO_ROOT/dotfiles"
-    return 0
-  fi
+  local backup_dir
+  backup_dir="$HOME_DIR/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 
-  fail "Could not find dotfiles repository"
-}
+  local pkg
+  for pkg in "${packages[@]}"; do
+    [ -d "$DOTFILES_ROOT/$pkg" ] || fail "Unknown package: $pkg"
+    backup_conflicts "$pkg" "$backup_dir"
+  done
 
-sync_file() {
-  local src="$1"
-  local dst="$2"
-
-  [ -f "$src" ] || return 0
-  mkdir -p "$(dirname "$dst")"
-  install -m 0644 "$src" "$dst"
-}
-
-sync_dir() {
-  local src="$1"
-  local dst="$2"
-
-  [ -d "$src" ] || return 0
-  mkdir -p "$dst"
-  rsync -a "$src/" "$dst/"
-}
-
-copy_if_missing() {
-  local src="$1"
-  local dst="$2"
-
-  [ -f "$src" ] || return 0
-  [ -e "$dst" ] && return 0
-  mkdir -p "$(dirname "$dst")"
-  install -m 0644 "$src" "$dst"
+  log "Linking packages: ${packages[*]}"
+  stow -d "$DOTFILES_ROOT" -t "$HOME_DIR" --no-folding --restow "${packages[@]}"
 }
 
 sync_dotfiles() {
-  resolve_dotfiles_root
+  link_dotfiles
 
-  log "Syncing files ftom $DOTFILES_ROOT"
-
-  sync_dir "$DOTFILES_ROOT/.config" "$HOME_DIR/.config"
-  sync_dir "$DOTFILES_ROOT/.screenlayout" "$HOME_DIR/.screenlayout"
-  sync_dir "$DOTFILES_ROOT/img" "$HOME_DIR/img"
-
-  sync_file "$DOTFILES_ROOT/.zshrc" "$HOME_DIR/.zshrc"
-  sync_file "$DOTFILES_ROOT/.tmux.conf" "$HOME_DIR/.tmux.conf"
-
-  sync_file "$DOTFILES_ROOT/.xsession"  "$HOME_DIR/.xsession"
-  chmod +x "$HOME_DIR/.xsession"
-
-  sync_file "$DOTFILES_ROOT/.xprofile" "$HOME_DIR/.xprofile"
-
-  sync_file "$DOTFILES_ROOT/.profile"    "$HOME_DIR/.profile"
-  sync_file "$DOTFILES_ROOT/.Xresources" "$HOME_DIR/.Xresources"
-  sync_dir  "$DOTFILES_ROOT/.local/bin"  "$HOME_DIR/.local/bin"
-  find "$HOME_DIR/.local/bin" -type f -exec chmod +x {} +
   if command_exists xrdb && [ -n "${DISPLAY:-}" ]; then
     xrdb -merge "$HOME_DIR/.Xresources" 2>/dev/null || true
   fi
@@ -107,20 +103,6 @@ sync_dotfiles() {
   if [ -d "$REPO_ROOT/etc/lightdm" ]; then
     sudo rsync -a "$REPO_ROOT/etc/lightdm/" "/etc/lightdm/"
   fi
-
-  if [ -d "$HOME_DIR/.config/i3/scripts" ]; then
-    find "$HOME_DIR/.config/i3/scripts" -type f -exec chmod +x {} +
-  fi
-
-  apply_repo_fallbacks
-}
-
-apply_repo_fallbacks() {
-  local rofi_dir="$HOME_DIR/.config/rofi"
-  local pink="$rofi_dir/pink_theme.rasi"
-
-  copy_if_missing "$pink" "$rofi_dir/powermenu.rasi"
-  copy_if_missing "$pink" "$rofi_dir/power-profiles.rasi"
 }
 
 install_oh_my_zsh() {

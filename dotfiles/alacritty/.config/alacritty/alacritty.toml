@@ -21,3 +21,9 @@ yellow = "0xe60077"
 [colors.primary]
 background = "0x0a0e14"
 foreground = "0xffc9dd"
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+bold   = { family = "JetBrainsMono Nerd Font", style = "Bold" }
+italic = { family = "JetBrainsMono Nerd Font", style = "Italic" }
+size   = 13.0

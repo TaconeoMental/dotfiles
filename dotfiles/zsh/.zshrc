@@ -69,14 +69,6 @@ fi
 
 add-zsh-hook precmd update_tmux_env
 
-if command -v keychain >/dev/null 2>&1; then
-    local -a keys=()
-    for k in ~/.ssh/id_ed25519 ~/.ssh/id_rsa ~/.ssh/id_ecdsa; do
-        [[ -f "$k" ]] && keys+=("$(basename "$k")")
-    done
-    (( ${#keys[@]} > 0 )) && eval "$(keychain --eval --quiet "${keys[@]}" 2>/dev/null)"
-fi
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

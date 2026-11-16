@@ -57,12 +57,13 @@ clone_or_update_repo() {
 
   if [ ! -d "$REPO_DIR/.git" ]; then
     log "Cloning dotfiles repository..."
-    git clone --depth=1 --branch "$REPO_BRANCH" "$REPO_URL" "$REPO_DIR"
+    git clone --branch "$REPO_BRANCH" "$REPO_URL" "$REPO_DIR"
+  elif [ -n "$(git -C "$REPO_DIR" status --porcelain)" ] || \
+       [ "$(git -C "$REPO_DIR" branch --show-current)" != "$REPO_BRANCH" ]; then
+    log "Repository has local changes or is not on $REPO_BRANCH. Skipping update"
   else
     log "Updating dotfiles repository..."
-    git -C "$REPO_DIR" fetch --depth=1 origin "$REPO_BRANCH"
-    git -C "$REPO_DIR" checkout "$REPO_BRANCH"
-    git -C "$REPO_DIR" reset --hard "origin/$REPO_BRANCH"
+    git -C "$REPO_DIR" pull --ff-only origin "$REPO_BRANCH"
   fi
 }
 

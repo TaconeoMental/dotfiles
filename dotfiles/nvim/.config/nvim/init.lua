@@ -148,8 +148,9 @@ require("lazy").setup({
     config = function()
       local api = require("nvim-tree.api")
 
+      -- Mappings personalizados
       local function on_attach(bufnr)
-        -- Cargar mappings default
+        -- Cargar mappings predeterminados
         api.map.on_attach.default(bufnr)
 
         local opts = {
@@ -159,6 +160,7 @@ require("lazy").setup({
           nowait = true,
         }
 
+        -- Mappings clásicos de NERDTree
         vim.keymap.set("n", "s", api.node.open.vertical, opts)
         vim.keymap.set("n", "i", api.node.open.horizontal, opts)
         vim.keymap.set("n", "t", api.node.open.tab, opts)
@@ -187,6 +189,7 @@ require("lazy").setup({
         },
       })
 
+      -- Abrir/enfocar árbol con ,n
       vim.keymap.set(
         "n",
         "<leader>n",
