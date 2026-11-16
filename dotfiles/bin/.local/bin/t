@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # t: one command for local and remote tmux sessions
 #
-#   t                     pick a session with fzf (type a new name to create it)
+#   t                     pick a session with fzf (type a new name to create it),
+#                         or go to MAIN if there are no sessions
 #   t name                attach/switch to session NAME, creating it if needed
 #   t host:               list the sessions on host
 #   t host:name           remote session NAME on host:
@@ -22,7 +23,7 @@ DEFAULT_SESSION="MAIN"
 RESURRECT_RESTORE="$HOME/.tmux/plugins/tmux-resurrect/scripts/restore.sh"
 
 usage() {
-  sed -n '2,13s/^# \{0,1\}//p' "$0"
+  sed -n '2,14s/^# \{0,1\}//p' "$0"
 }
 
 die() {
@@ -136,15 +137,16 @@ remote() {
 }
 
 pick() {
-  command -v fzf >/dev/null 2>&1 || die "fzf is not installed"
-
   local sessions choice rc=0
-  sessions="$(
-    {
-      printf '%s\n' "$DEFAULT_SESSION"
-      tmux list-sessions -F '#S' 2>/dev/null || true
-    } | awk '!seen[$0]++'
-  )"
+  sessions="$(tmux list-sessions -F '#S' 2>/dev/null || true)"
+
+  # Nothing to pick from: go straight to the default session
+  if [ -z "$sessions" ]; then
+    local_session "$DEFAULT_SESSION"
+    return
+  fi
+
+  command -v fzf >/dev/null 2>&1 || die "fzf is not installed"
 
   # Exit codes: 0 = picked a session, 1 = nothing matched (use what was
   # typed), 130 = cancelled
