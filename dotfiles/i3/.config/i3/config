@@ -77,7 +77,7 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
 # Edit rápido de esta conf
-bindsym $mod+F1 exec alacritty -e vim -R ~/.config/i3/config
+bindsym $mod+F1 exec alacritty -e nvim -R ~/.config/i3/config
 
 # Backlight control
 bindsym XF86MonBrightnessUp exec brightnessctl set +10% && notify-send "Brightness up"

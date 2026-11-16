@@ -9,7 +9,7 @@ plugins=(git zsh-vi-mode fast-syntax-highlighting)
 export PATH="$HOME/.local/bin:$PATH"
 source $ZSH/oh-my-zsh.sh
 
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 zvm_after_init() {
