@@ -195,9 +195,10 @@
     # Scale larger icons down to this size, set to 0 to disable
     max_icon_size = 32
 
-    # Paths to default icons.
-    #icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
-    icon_path = /usr/share/icons/Qogir/16/status:/usr/share/icons/Qogir/16/devices/:/usr/share/icons/Qogir/24/panel/:/usr/share/icons/Qogir/16/apps/:/usr/share/pixmaps/
+    # Icon theme (installed by the bootstrap), looked up by name
+    icon_theme = "Papirus-Dark"
+    enable_recursive_icon_lookup = true
+
     ### History ###
 
     # Should a notification popped up from history be sticky or timeout
@@ -295,23 +296,23 @@
     background = "#F6076144"
     foreground = "#ffffffee"
     timeout = 5
-    # Icon for notifications with low urgency, uncomment to enable
-    icon = /usr/share/icons/Arc-X-D/status/16/dialog-information.png
+    # Icon for notifications with low urgency
+    default_icon = dialog-information
 
 [urgency_normal]
     background = "#F6076144"
     foreground = "#ffffffee"
     timeout = 5
-    # Icon for notifications with normal urgency, uncomment to enable
-    icon = /usr/share/icons/Arc-X-D/status/16/dialog-question.png
+    # Icon for notifications with normal urgency
+    default_icon = dialog-question
 
 [urgency_critical]
     background = "#ff0537"
     foreground = "#ffffff"
     frame_color = "#ba062a"
     timeout = 120
-    # Icon for notifications with critical urgency, uncomment to enable
-    icon = /usr/share/icons/Arc-X-D/status/16/dialog-warning.png
+    # Icon for notifications with critical urgency
+    default_icon = dialog-warning
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.
