@@ -14,7 +14,7 @@ workspace_layout tabbed
 ##############################
 
 #border indicator on windows:
-new_window pixel 2
+default_border pixel 2
 
 # Set inner/outer gaps
 gaps inner 6
