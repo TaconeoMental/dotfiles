@@ -201,9 +201,6 @@ exec_always --no-startup-id picom --backend glx -f -D 5
 # autostart applications/services on login: #
 #############################################
 
-#get auth work with polkit-gnome
-exec --no-startup-id start-polkit
-
 # Jeje
 exec --no-startup-id dex --autostart --environment i3
 
