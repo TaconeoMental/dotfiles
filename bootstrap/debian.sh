@@ -12,7 +12,7 @@ install_packages() {
     zsh tmux neovim \
     python3 python3-venv python3-pip \
     xorg xinit xbacklight dbus-x11 \
-    i3 i3lock i3blocks rofi dunst dex picom feh \
+    i3 i3lock i3blocks rofi dunst dex picom hsetroot \
     alacritty flameshot ranger \
     scrot imagemagick playerctl libnotify-bin \
     brightnessctl lxpolkit \

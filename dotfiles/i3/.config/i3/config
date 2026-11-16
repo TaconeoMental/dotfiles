@@ -207,8 +207,8 @@ exec --no-startup-id start-polkit
 # Jeje
 exec --no-startup-id dex --autostart --environment i3
 
-# set wallpaper
-exec --no-startup-id feh --bg-scale ~/Pictures/wallpaper.png
+# set background color
+exec --no-startup-id hsetroot -solid "#020304"
 
 # set powersavings for display:
 exec --no-startup-id xset s 480 dpms 600 600 600
