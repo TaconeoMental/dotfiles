@@ -21,7 +21,6 @@ if command -v apt-get >/dev/null 2>&1; then
   alias amimir='sudo apt-get update && sudo apt-get dist-upgrade -y; shutdown 0'
 fi
 alias fuck='sudo $(fc -ln -1)'
-alias tmux="TERM=xterm-256color tmux"
 
 # Refresh environment variables if inside tmux
 # From https://github.com/ibab/dotfiles/raw/master/zshrc :)

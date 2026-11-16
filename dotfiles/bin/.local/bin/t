@@ -48,8 +48,7 @@ go_to_session() {
   if inside_tmux; then
     tmux switch-client -t "=$1"
   else
-    # Same as the `tmux` alias in .zshrc
-    TERM=xterm-256color exec tmux attach-session -t "=$1"
+    exec tmux attach-session -t "=$1"
   fi
 }
 
@@ -169,7 +168,7 @@ restore() {
   else
     has_session "$DEFAULT_SESSION" || tmux new-session -d -s "$DEFAULT_SESSION"
     tmux run-shell "$RESURRECT_RESTORE"
-    TERM=xterm-256color exec tmux attach-session
+    exec tmux attach-session
   fi
 }
 
